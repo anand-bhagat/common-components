@@ -12,6 +12,11 @@ const components: ComponentCard[] = [
         description: "Customizable alert dialogs with various styles and callbacks",
         href: "/alerts",
     },
+    {
+        title: "Toast",
+        description: "Customizable toasts with various styles and callbacks",
+        href: "/toasts",
+    },
 ];
 
 export default function Home() {
