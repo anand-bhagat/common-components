@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# React Component Library
 
-## Getting Started
+A modern collection of production-ready React components built with Next.js, Tailwind CSS, and TypeScript. This library showcases reusable UI components implementing best practices and modern design patterns.
 
-First, run the development server:
+## 🚀 Features
+
+- **Modern Stack**: Built with Next.js 15, React 19, and TypeScript
+- **Styling**: Tailwind CSS for utility-first styling
+- **Animations**: Framer Motion for smooth transitions
+- **Type Safety**: Full TypeScript support
+- **Responsive**: Mobile-first design approach
+- **Accessible**: Following WCAG guidelines
+- **Customizable**: Easy to modify and extend
+- **Well Documented**: Clear usage examples and API documentation
+
+## 🛠️ Tech Stack
+
+- [Next.js 15.1](https://nextjs.org/)
+- [React 19](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Framer Motion](https://www.framer.com/motion/)
+
+## 🚦 Getting Started
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/anandbhagat/common-components.git
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+or
+```bash
+yarn install    
+```
+
+3. Start the development server:
 
 ```bash
 npm run dev
-# or
+```
+or
+```bash
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. Open [http://localhost:3000](http://localhost:3000) to view the component library.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📖 Usage
 
-## Learn More
+Each component in the library is:
+- Self-contained
+- Fully typed with TypeScript
+- Documented with examples
+- Customizable via props
+- Responsive by default
 
-To learn more about Next.js, take a look at the following resources:
+Visit the live demo to explore components and their usage: [Component Library Demo](https://common-components.anandbhagat.com)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎨 Customization
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Components can be customized in several ways:
 
-## Deploy on Vercel
+1. **Props**: Each component accepts specific props for customization
+2. **Tailwind**: Modify the `tailwind.config.ts` file
+3. **Theme**: Extend the default theme
+4. **TypeScript**: Extend type definitions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📄 License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+Anand Bhagat
+- Website: [anandbhagat.com](https://anandbhagat.com)
+- Twitter: [@anandnbhagat](https://twitter.com/anandnbhagat)
+- LinkedIn: [anandbhagat](https://www.linkedin.com/in/anandnbhagat/)
+- GitHub: [anandbhagat](https://github.com/anand-bhagat)
+
+## ✨ Acknowledgments
+
+- [Next.js Team](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Framer Motion](https://www.framer.com/motion/)
