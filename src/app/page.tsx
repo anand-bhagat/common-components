@@ -19,10 +19,10 @@ export default function Home() {
         <div className="min-h-screen p-8 bg-background">
             <main className="max-w-7xl mx-auto">
                 <div className="text-center mb-16">
-                    <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+                    <h1 className="text-4xl font-bold mb-4 text-gray-900">
                         Common Components
                     </h1>
-                    <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    <p className="text-gray-600 max-w-2xl mx-auto">
                         A collection of reusable React components built with
                         Next.js, Tailwind CSS, and TypeScript.
                     </p>
@@ -34,15 +34,15 @@ export default function Home() {
                             key={component.title}
                             href={component.href}
                             className="block transition-all duration-300 rounded-xl 
-                                     bg-white dark:bg-gray-900 p-6 
-                                     border border-gray-200 dark:border-gray-800
+                                     bg-white p-6 
+                                     border border-gray-200
                                      hover:scale-105 hover:shadow-xl
                                      group-hover:blur-[2px] hover:!blur-none"
                         >
-                            <h2 className="text-xl font-semibold mb-3 text-gray-900 dark:text-gray-100">
+                            <h2 className="text-xl font-semibold mb-3 text-gray-900">
                                 {component.title}
                             </h2>
-                            <p className="text-gray-600 dark:text-gray-400 text-sm">
+                            <p className="text-gray-600 text-sm">
                                 {component.description}
                             </p>
                         </Link>
@@ -50,7 +50,7 @@ export default function Home() {
                 </div>
 
                 {components.length === 0 && (
-                    <div className="text-center text-gray-500 dark:text-gray-400 py-20">
+                    <div className="text-center text-gray-500 py-20">
                         <p>No components available yet. Check back soon!</p>
                     </div>
                 )}
@@ -58,3 +58,4 @@ export default function Home() {
         </div>
     );
 }
+
