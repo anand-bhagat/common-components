@@ -17,6 +17,11 @@ const components: ComponentCard[] = [
         description: "Customizable toasts with various styles and callbacks",
         href: "/toasts",
     },
+    {
+        title: "Modal",
+        description: "Customizable modals with various styles and callbacks",
+        href: "/modal",
+    },
 ];
 
 export default function Home() {
