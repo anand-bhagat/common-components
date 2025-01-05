@@ -11,7 +11,7 @@ const BasicModal = () => {
     };
 
     return (
-        <div>
+        <div className="mb-4 md:mb-0">
             <button
                 onClick={handleOpenModal}
                 className={twMerge(

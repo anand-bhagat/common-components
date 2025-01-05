@@ -16,9 +16,9 @@ const SizeModal = () => {
     } = useModal();
 
     return (
-        <div className="col-span-2 grid grid-cols-2 gap-4">
+        <div className="col-span-2 md:grid md:grid-cols-2 gap-4">
             {/* Small Modal */}
-            <div>
+            <div className="mb-4 md:mb-0">
                 <button
                     onClick={showSmallModal}
                     className={twMerge(
@@ -60,7 +60,7 @@ const SizeModal = () => {
             </div>
 
             {/* Large Modal */}
-            <div>
+            <div className="mb-4 md:mb-0">
                 <button
                     onClick={showLargeModal}
                     className={twMerge(

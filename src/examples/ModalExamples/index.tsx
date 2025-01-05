@@ -8,7 +8,7 @@ import SizeModal from "./SizeModal";
 
 const ModalExamples = () => {
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 group">
+        <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 group">
             <BasicModal />
             <NestedModal />
             <FormModal />
