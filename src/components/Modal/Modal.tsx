@@ -7,7 +7,10 @@ interface ModalContextValue {
     hideModal: () => void;
 }
 
-const ModalContext = createContext<ModalContextValue>({ isOpen: false, hideModal: () => {} });
+const ModalContext = createContext<ModalContextValue>({
+    isOpen: false,
+    hideModal: () => {},
+});
 
 interface ModalProps {
     isOpen: boolean;
@@ -39,10 +42,10 @@ export const Modal: React.FC<ModalProps> & {
     return (
         <ModalContext.Provider value={{ isOpen, hideModal: onClose }}>
             <AnimatePresence mode="wait">
-                <div className={isOpen ? "block" : "hidden"}>
+                {isOpen && (
                     <motion.div
                         initial="hidden"
-                        animate={isOpen ? "visible" : "hidden"}
+                        animate="visible"
                         exit="hidden"
                         variants={overlayVariants}
                         className={twMerge(
@@ -63,17 +66,25 @@ export const Modal: React.FC<ModalProps> & {
                             {children}
                         </motion.div>
                     </motion.div>
-                </div>
+                )}
             </AnimatePresence>
         </ModalContext.Provider>
     );
 };
 
-const ModalHeader: React.FC<{ children: React.ReactNode, className?: string }> = ({ children, className }) => {
+const ModalHeader: React.FC<{
+    children: React.ReactNode;
+    className?: string;
+}> = ({ children, className }) => {
     const { hideModal } = useContext(ModalContext);
 
     return (
-        <div className={twMerge("px-6 py-4 border-b border-gray-200 flex justify-between items-center", className)}>
+        <div
+            className={twMerge(
+                "px-6 py-4 border-b border-gray-200 flex justify-between items-center",
+                className
+            )}
+        >
             <div className="text-xl font-semibold text-gray-900">
                 {children}
             </div>
@@ -97,12 +108,23 @@ const ModalHeader: React.FC<{ children: React.ReactNode, className?: string }> =
     );
 };
 
-const ModalBody: React.FC<{ children: React.ReactNode, className?: string }> = ({ children, className }) => (
-    <div className={twMerge("px-6 py-4", className)}  >{children}</div>
+const ModalBody: React.FC<{
+    children: React.ReactNode;
+    className?: string;
+}> = ({ children, className }) => (
+    <div className={twMerge("px-6 py-4", className)}>{children}</div>
 );
 
-const ModalFooter: React.FC<{ children: React.ReactNode, className?: string }> = ({ children, className }) => (
-    <div className={twMerge("px-6 py-4 border-t border-gray-200 flex justify-end space-x-2", className)}>
+const ModalFooter: React.FC<{
+    children: React.ReactNode;
+    className?: string;
+}> = ({ children, className }) => (
+    <div
+        className={twMerge(
+            "px-6 py-4 border-t border-gray-200 flex justify-end space-x-2",
+            className
+        )}
+    >
         {children}
     </div>
 );

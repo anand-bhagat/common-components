@@ -19,6 +19,7 @@ export interface ToastOptions {
     showProgressBar?: boolean;
     showCloseButton?: boolean;
     onClose?: () => void;
+    isOpen?: boolean;
 }
 
 interface ToastInterface extends ToastOptions {
@@ -58,8 +59,18 @@ class ToastStore {
     }
 
     removeToast(id: string) {
-        this.toasts = this.toasts.filter(t => t.id !== id);
+        this.toasts = this.toasts.map(t => {
+            if (t.id === id) {
+                return { ...t, isOpen: false };
+            }
+            return t;
+        });
         this.emit();
+
+        setTimeout(() => {
+            this.toasts = this.toasts.filter(t => t.id !== id);
+            this.emit();
+        }, 1000);
     }
 
     private emit() {
@@ -86,6 +97,7 @@ export function useToast() {
             showProgressBar: true,
             showCloseButton: true,
             type: "info",
+            isOpen: true,
             ...options,
         };
 

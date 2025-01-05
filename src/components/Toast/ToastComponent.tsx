@@ -16,6 +16,7 @@ const ToastComponent: React.FC<ToastComponentProps> = ({
     showProgressBar = true,
     showCloseButton = true,
     onClose,
+    isOpen,
 }) => {
     const [progress, setProgress] = useState(100);
 
@@ -45,7 +46,12 @@ const ToastComponent: React.FC<ToastComponentProps> = ({
 
     const icons = {
         success: (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
                 <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -55,7 +61,12 @@ const ToastComponent: React.FC<ToastComponentProps> = ({
             </svg>
         ),
         error: (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
                 <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -65,7 +76,12 @@ const ToastComponent: React.FC<ToastComponentProps> = ({
             </svg>
         ),
         warning: (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
                 <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -75,7 +91,12 @@ const ToastComponent: React.FC<ToastComponentProps> = ({
             </svg>
         ),
         info: (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
                 <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -98,59 +119,73 @@ const ToastComponent: React.FC<ToastComponentProps> = ({
     };
 
     return (
-        <AnimatePresence>
-            <motion.div
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                variants={toastVariants}
-                className={twMerge(
-                    "relative min-w-[300px] max-w-md rounded-lg shadow-lg mb-4",
-                    "bg-white border border-gray-200"
-                )}
-            >
-                <div className="p-4">
-                    <div className="flex items-start">
-                        <div
-                            className={twMerge("flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-white", colors[type])}
-                        >
-                            {icons[type]}
-                        </div>
-                        <div className="ml-3 w-0 flex-1">
-                            {title && <h4 className="text-sm font-medium text-gray-900">{title}</h4>}
-                            <p className="mt-1 text-sm text-gray-600">{message}</p>
-                        </div>
-                        {showCloseButton && (
-                            <button
-                                onClick={onClose}
-                                className="ml-4 flex-shrink-0 rounded-lg p-1 hover:bg-gray-100 transition-colors"
+        <AnimatePresence mode="wait">
+            {isOpen && (
+                <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={toastVariants}
+                    className={twMerge(
+                        "relative min-w-[300px] max-w-md rounded-lg shadow-lg mb-4",
+                        "bg-white border border-gray-200"
+                    )}
+                >
+                    <div className="p-4">
+                        <div className="flex items-start">
+                            <div
+                                className={twMerge(
+                                    "flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-white",
+                                    colors[type]
+                                )}
                             >
-                                <svg
-                                    className="w-5 h-5 text-gray-500"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                                {icons[type]}
+                            </div>
+                            <div className="ml-3 w-0 flex-1">
+                                {title && (
+                                    <h4 className="text-sm font-medium text-gray-900">
+                                        {title}
+                                    </h4>
+                                )}
+                                <p className="mt-1 text-sm text-gray-600">
+                                    {message}
+                                </p>
+                            </div>
+                            {showCloseButton && (
+                                <button
+                                    onClick={onClose}
+                                    className="ml-4 flex-shrink-0 rounded-lg p-1 hover:bg-gray-100 transition-colors"
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        )}
+                                    <svg
+                                        className="w-5 h-5 text-gray-500"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
+                                    </svg>
+                                </button>
+                            )}
+                        </div>
                     </div>
-                </div>
-                {showProgressBar && duration !== Infinity && (
-                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-100 rounded-b-lg overflow-hidden">
-                        <div
-                            className={twMerge("h-full transition-all duration-100 ease-linear", colors[type])}
-                            style={{ width: `${progress}%` }}
-                        />
-                    </div>
-                )}
-            </motion.div>
+                    {showProgressBar && duration !== Infinity && (
+                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-100 rounded-b-lg overflow-hidden">
+                            <div
+                                className={twMerge(
+                                    "h-full transition-all duration-100 ease-linear",
+                                    colors[type]
+                                )}
+                                style={{ width: `${progress}%` }}
+                            />
+                        </div>
+                    )}
+                </motion.div>
+            )}
         </AnimatePresence>
     );
 };

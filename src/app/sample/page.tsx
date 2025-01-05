@@ -3,7 +3,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SamplePage = () => {
-    const [isVisible, setIsVisible] = React.useState(true);
+    const [isVisible, setIsVisible] = React.useState(false);
 
     return (
         <div className="p-4">
@@ -14,25 +14,42 @@ const SamplePage = () => {
                 Toggle Content
             </button>
 
-            <AnimatePresence>
-                <motion.div
-                    key="content"
-                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                    animate={{ 
-                        opacity: isVisible ? 1 : 0,
-                        scale: isVisible ? 1 : 0.95,
-                        y: isVisible ? 0 : -20,
-                        transition: { 
-                            type: "spring", 
-                            damping: 25, 
-                            stiffness: 500 
-                        }
-                    }}
-                >
-                    <div className="p-4 bg-gray-100 rounded">
-                        Sample Page Content
-                    </div>
-                </motion.div>
+            <AnimatePresence mode="wait">
+                {isVisible && (
+                    <motion.div
+                        key="modal"
+                        initial={{ opacity: 0, scale: 0.75 }}
+                        animate={{ 
+                            opacity: 1,
+                            scale: 1,
+                            transition: { 
+                                type: "spring", 
+                                damping: 30, 
+                                stiffness: 400 
+                            }
+                        }}
+                        exit={{
+                            opacity: 0,
+                            scale: 0.95,
+                            transition: {
+                                duration: 0.2
+                            }
+                        }}
+                        className="fixed inset-0 flex items-center justify-center z-50"
+                    >
+                        <motion.div 
+                            className="absolute inset-0 bg-black/50"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                        />
+                        
+                        <div className="relative z-10 p-6 bg-white rounded-lg shadow-xl max-w-md w-full m-4">
+                            Sample Page Content
+                            <button onClick={() => setIsVisible(false)}>Close</button>
+                        </div>
+                    </motion.div>
+                )}
             </AnimatePresence>
         </div>
     );
