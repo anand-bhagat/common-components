@@ -22,6 +22,16 @@ const components: ComponentCard[] = [
         description: "Customizable modals with various styles and callbacks",
         href: "/modal",
     },
+    {
+        title: "Tooltip",
+        description: "Customizable tooltips with various styles and callbacks",
+        href: "/tooltip",
+    },
+    {
+        title: "Accordion",
+        description: "Customizable accordions with various styles and callbacks",
+        href: "/accordion",
+    },
 ];
 
 export default function Home() {
