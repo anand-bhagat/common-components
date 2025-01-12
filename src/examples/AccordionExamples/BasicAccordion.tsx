@@ -30,7 +30,7 @@ const BasicAccordion = () => {
                         <Accordion.Content>
                             React is a JavaScript library for building user interfaces. 
                             It lets you compose complex UIs from small and isolated 
-                            pieces of code called "components".
+                            pieces of code called components.
                         </Accordion.Content>
                     </Accordion.Item>
 
