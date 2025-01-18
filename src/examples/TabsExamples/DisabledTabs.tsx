@@ -9,7 +9,6 @@ import {
     ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
-import { twMerge } from 'tailwind-merge';
 
 const DisabledTabs = () => {
     return (

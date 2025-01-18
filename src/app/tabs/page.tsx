@@ -1,5 +1,5 @@
 import TabsExamples from "@/examples/TabsExamples";
-import React from "react";
+import React, { Suspense } from "react";
 
 const TabPage = () => {
     return (
@@ -11,7 +11,9 @@ const TabPage = () => {
                 <p className="text-center text-gray-700 mb-12">
                     Explore different types of tabs and their functionalities.
                 </p>
-                <TabsExamples />
+                <Suspense fallback={<div>Loading...</div>}>
+                    <TabsExamples />
+                </Suspense>
             </div>
         </div>
     );

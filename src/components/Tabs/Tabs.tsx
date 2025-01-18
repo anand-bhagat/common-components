@@ -68,14 +68,6 @@ const useTabs = () => {
     return context;
 };
 
-const useTab = () => {
-    const context = useContext(TabContext);
-    if (!context) {
-        throw new Error('useTab must be used within a Tab component');
-    }
-    return context;
-};
-
 // Default Underline Indicator
 const DefaultIndicator = ({ isActive, disabled, tabsId }: IndicatorProps) => {
     if (!isActive || disabled) return null;
@@ -131,6 +123,8 @@ export const Tabs = ({
         } else if (!urlTab && defaultTab) {
             setActiveTab(defaultTab);
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [urlTab, defaultTab]);
 
     const activeTab = urlTab || defaultTab || '';
@@ -190,7 +184,7 @@ export const Tab = ({ children, id, icon, className, disabled }: TabProps) => {
             registerDisabledTab(id);
         }
         return () => unregisterDisabledTab(id);
-    }, [disabled, id]);
+    }, [disabled, id, registerDisabledTab, unregisterDisabledTab]);
 
     const handleClick = (e: React.MouseEvent) => {
         if (disabled) {
