@@ -9,28 +9,33 @@ interface ComponentCard {
 const components: ComponentCard[] = [
     {
         title: "Alert Dialog",
-        description: "Customizable alert dialogs with various styles and callbacks",
+        description: "Animated alert dialogs with GIF icons, customizable actions, and backdrop blur effects",
         href: "/alerts",
     },
     {
         title: "Toast",
-        description: "Customizable toasts with various styles and callbacks",
+        description: "Position-based toasts with progress bars, custom durations, and smooth animations",
         href: "/toasts",
     },
     {
         title: "Modal",
-        description: "Customizable modals with various styles and callbacks",
+        description: "Flexible modals with header, body, and footer components, featuring backdrop animations",
         href: "/modal",
     },
     {
         title: "Tooltip",
-        description: "Customizable tooltips with various styles and callbacks",
+        description: "Multi-directional tooltips with rich content support and customizable arrow positions",
         href: "/tooltip",
     },
     {
         title: "Accordion",
-        description: "Customizable accordions with various styles and callbacks",
+        description: "Feature-rich accordions with animations, nested content, and multiple expansion modes",
         href: "/accordion",
+    },
+    {
+        title: "Tabs",
+        description: "Accessible tabs with URL sync, vertical layouts, and animated transitions using Framer Motion",
+        href: "/tabs",
     },
 ];
 
