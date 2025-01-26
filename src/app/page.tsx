@@ -37,6 +37,11 @@ const components: ComponentCard[] = [
         description: "Accessible tabs with URL sync, vertical layouts, and animated transitions using Framer Motion",
         href: "/tabs",
     },
+    {
+        title: "Infinite Scroll",
+        description: "An infinite scroll component that loads more items as you scroll down",
+        href: "/infinite-scroll",
+    },
 ];
 
 export default function Home() {
