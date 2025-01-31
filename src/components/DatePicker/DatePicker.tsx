@@ -1,6 +1,6 @@
 /**
  * DatePicker Component
- * 
+ *
  * A compound component for date selection with support for both controlled and uncontrolled usage.
  * Features include:
  * - Manual date input with format validation
@@ -8,7 +8,7 @@
  * - Customizable date format
  * - Flexible positioning of icon and input
  * - Support for custom triggers and icons
- * 
+ *
  * Basic usage:
  * ```tsx
  * <DatePicker onChange={handleChange}>
@@ -46,6 +46,8 @@ import {
     setYear,
     setMonth,
     getMonth,
+    startOfDay,
+    endOfDay,
 } from "date-fns";
 
 // Context Types
@@ -57,6 +59,8 @@ interface DatePickerContextType {
     isOpen: boolean;
     setIsOpen: (open: boolean) => void;
     dateFormat: string;
+    minDate?: Date;
+    maxDate?: Date;
 }
 
 // Props Types
@@ -73,6 +77,10 @@ interface DatePickerProps {
     onChange?: (date: Date | null) => void;
     /** Date format string (using date-fns format) */
     dateFormat?: string;
+    /** Minimum selectable date */
+    minDate?: Date;
+    /** Maximum selectable date */
+    maxDate?: Date;
 }
 
 interface DatePickerIconProps {
@@ -151,21 +159,38 @@ const DatePickerRoot = ({
     className,
     onChange,
     dateFormat = "MM/dd/yyyy",
+    minDate,
+    maxDate,
 }: DatePickerProps) => {
     const isControlled = value !== undefined;
     const [internalDate, setInternalDate] = useState<Date | null>(
         defaultDate || null
     );
-    const [currentMonth, setCurrentMonth] = useState<Date>(
-        defaultDate || value || new Date()
-    );
+
+    // Normalize minDate to start of day and maxDate to end of day
+    const normalizedMinDate = minDate ? startOfDay(minDate) : undefined;
+    const normalizedMaxDate = maxDate ? endOfDay(maxDate) : undefined;
+
+    // Set initial current month based on priority
+    const [currentMonth, setCurrentMonth] = useState<Date>(() => {
+        if (defaultDate) return defaultDate;
+        if (value) return value;
+        if (normalizedMinDate) return normalizedMinDate;
+        return new Date();
+    });
+
     const [isOpen, setIsOpen] = useState(false);
     const datePickerRef = useRef<HTMLDivElement>(null);
 
-    // Use the controlled value if provided, otherwise use internal state
     const selectedDate = isControlled ? value : internalDate;
 
     const handleDateChange = (date: Date | null) => {
+        if (date) {
+            const normalizedDate = startOfDay(date);
+            if (normalizedMinDate && normalizedDate < normalizedMinDate) return;
+            if (normalizedMaxDate && normalizedDate > normalizedMaxDate) return;
+        }
+
         if (!isControlled) {
             setInternalDate(date);
         }
@@ -181,6 +206,17 @@ const DatePickerRoot = ({
             setCurrentMonth(value);
         }
     }, [isControlled, value]);
+
+    // Update current month only when minDate changes
+    useEffect(() => {
+        if (normalizedMinDate) {
+            // Only set current month to minDate if current month is before minDate
+            if (startOfMonth(currentMonth) < normalizedMinDate) {
+                setCurrentMonth(normalizedMinDate);
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [normalizedMinDate]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -208,6 +244,8 @@ const DatePickerRoot = ({
                 isOpen,
                 setIsOpen,
                 dateFormat,
+                minDate: normalizedMinDate,
+                maxDate: normalizedMaxDate,
             }}
         >
             <div
@@ -291,6 +329,8 @@ const Input = ({
         setIsOpen,
         setSelectedDate,
         dateFormat: contextDateFormat,
+        minDate,
+        maxDate,
     } = useDatePicker();
     const [inputValue, setInputValue] = useState("");
     const finalDateFormat = dateFormat || contextDateFormat;
@@ -310,25 +350,25 @@ const Input = ({
         const value = e.target.value;
         setInputValue(value);
 
-        // If input is empty, clear the date
         if (!value.trim()) {
             setSelectedDate(null);
             return;
         }
 
         try {
-            // Try to parse the date with the current format
             const parsedDate = parse(value, finalDateFormat, new Date());
 
-            // Only update if it's a valid date and the input matches the expected format length
             if (
                 isValid(parsedDate) &&
                 value.length === format(parsedDate, finalDateFormat).length
             ) {
+                const normalizedDate = startOfDay(parsedDate);
+                if (minDate && normalizedDate < minDate) return;
+                if (maxDate && normalizedDate > maxDate) return;
+
                 setSelectedDate(parsedDate);
             }
-        } catch (error) {
-            console.error("Invalid date format:", error);
+        } catch {
             // Keep the input value but don't update the date
         }
     };
@@ -397,6 +437,8 @@ const Calendar = ({ className }: DatePickerCalendarProps) => {
         currentMonth,
         setCurrentMonth,
         setSelectedDate,
+        minDate,
+        maxDate,
     } = useDatePicker();
 
     const [calendarView, setCalendarView] = useState<CalendarView>("days");
@@ -410,7 +452,10 @@ const Calendar = ({ className }: DatePickerCalendarProps) => {
 
     const handlePrevious = () => {
         if (calendarView === "days") {
-            setCurrentMonth(subMonths(currentMonth, 1));
+            const prevMonth = subMonths(currentMonth, 1);
+            if (minDate && startOfMonth(prevMonth) < startOfMonth(minDate))
+                return;
+            setCurrentMonth(prevMonth);
         } else if (calendarView === "months") {
             setCurrentMonth(setYear(currentMonth, getYear(currentMonth) - 1));
         } else if (calendarView === "years") {
@@ -423,7 +468,10 @@ const Calendar = ({ className }: DatePickerCalendarProps) => {
 
     const handleNext = () => {
         if (calendarView === "days") {
-            setCurrentMonth(addMonths(currentMonth, 1));
+            const nextMonth = addMonths(currentMonth, 1);
+            if (maxDate && startOfMonth(nextMonth) > startOfMonth(maxDate))
+                return;
+            setCurrentMonth(nextMonth);
         } else if (calendarView === "months") {
             setCurrentMonth(setYear(currentMonth, getYear(currentMonth) + 1));
         } else if (calendarView === "years") {
@@ -464,6 +512,8 @@ const Calendar = ({ className }: DatePickerCalendarProps) => {
                 onPrevious={handlePrevious}
                 onNext={handleNext}
                 onViewChange={handleViewChange}
+                minDate={minDate}
+                maxDate={maxDate}
             />
 
             {calendarView === "days" && (
@@ -506,6 +556,8 @@ const CalendarHeader = ({
     onPrevious,
     onNext,
     onViewChange,
+    minDate,
+    maxDate,
 }: {
     calendarView: CalendarView;
     currentMonth: Date;
@@ -513,58 +565,92 @@ const CalendarHeader = ({
     onPrevious: () => void;
     onNext: () => void;
     onViewChange: () => void;
-}) => (
-    <div className="flex items-center justify-between mb-4">
-        <button
-            onClick={onPrevious}
-            className="p-1 hover:bg-gray-100 rounded-full"
-            type="button"
-        >
-            <svg
-                className="w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+    minDate?: Date;
+    maxDate?: Date;
+}) => {
+    const isPreviousDisabled = () => {
+        if (!minDate) return false;
+        if (calendarView === "days") {
+            return (
+                startOfMonth(subMonths(currentMonth, 1)) < startOfMonth(minDate)
+            );
+        }
+        return false;
+    };
+
+    const isNextDisabled = () => {
+        if (!maxDate) return false;
+        if (calendarView === "days") {
+            return (
+                startOfMonth(addMonths(currentMonth, 1)) > startOfMonth(maxDate)
+            );
+        }
+        return false;
+    };
+
+    return (
+        <div className="flex items-center justify-between mb-4">
+            <button
+                onClick={onPrevious}
+                className={twMerge(
+                    "p-1 hover:bg-gray-100 rounded-full",
+                    isPreviousDisabled() &&
+                        "opacity-50 cursor-not-allowed hover:bg-transparent"
+                )}
+                disabled={isPreviousDisabled()}
+                type="button"
             >
-                <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                />
-            </svg>
-        </button>
-        <button
-            onClick={onViewChange}
-            className="font-semibold hover:bg-gray-100 rounded-lg px-2 py-1"
-            type="button"
-        >
-            {calendarView === "days" && format(currentMonth, "MMMM yyyy")}
-            {calendarView === "months" && format(currentMonth, "yyyy")}
-            {calendarView === "years" &&
-                `${yearRange.start} - ${yearRange.end - 1}`}
-        </button>
-        <button
-            onClick={onNext}
-            className="p-1 hover:bg-gray-100 rounded-full"
-            type="button"
-        >
-            <svg
-                className="w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+                <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 19l-7-7 7-7"
+                    />
+                </svg>
+            </button>
+            <button
+                onClick={onViewChange}
+                className="font-semibold hover:bg-gray-100 rounded-lg px-2 py-1"
+                type="button"
             >
-                <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                />
-            </svg>
-        </button>
-    </div>
-);
+                {calendarView === "days" && format(currentMonth, "MMMM yyyy")}
+                {calendarView === "months" && format(currentMonth, "yyyy")}
+                {calendarView === "years" &&
+                    `${yearRange.start} - ${yearRange.end - 1}`}
+            </button>
+            <button
+                onClick={onNext}
+                className={twMerge(
+                    "p-1 hover:bg-gray-100 rounded-full",
+                    isNextDisabled() &&
+                        "opacity-50 cursor-not-allowed hover:bg-transparent"
+                )}
+                disabled={isNextDisabled()}
+                type="button"
+            >
+                <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                    />
+                </svg>
+            </button>
+        </div>
+    );
+};
 
 /**
  * Days view component for selecting a specific date
@@ -579,11 +665,20 @@ const DaysView = ({
     selectedDate: Date | null;
     onSelectDate: (date: Date) => void;
 }) => {
+    const { minDate, maxDate } = useDatePicker();
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(currentMonth);
     const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
     const startDay = getDay(monthStart);
     const daysToFill = Array(startDay).fill(null);
+    const today = startOfDay(new Date());
+
+    const isDateDisabled = (date: Date) => {
+        const normalizedDate = startOfDay(date);
+        if (minDate && normalizedDate < minDate) return true;
+        if (maxDate && normalizedDate > maxDate) return true;
+        return false;
+    };
 
     return (
         <>
@@ -606,18 +701,26 @@ const DaysView = ({
                     const isSelected =
                         selectedDate && isSameDay(day, selectedDate);
                     const isCurrentMonth = isSameMonth(day, currentMonth);
+                    const disabled = isDateDisabled(day);
+                    const isToday = isSameDay(day, today);
 
                     return (
                         <button
                             key={format(day, "yyyy-MM-dd")}
-                            onClick={() => onSelectDate(day)}
+                            onClick={() => !disabled && onSelectDate(day)}
                             className={twMerge(
-                                "h-8 w-8 rounded-full flex items-center justify-center text-sm",
+                                "h-8 w-8 rounded-full flex items-center justify-center text-sm relative",
                                 "hover:bg-gray-100",
                                 !isCurrentMonth && "text-gray-400",
                                 isSelected &&
-                                    "bg-blue-600 text-white hover:bg-blue-700"
+                                    "bg-blue-600 text-white hover:bg-blue-700",
+                                disabled &&
+                                    "opacity-50 cursor-not-allowed hover:bg-transparent",
+                                isToday &&
+                                    !isSelected &&
+                                    "border border-blue-500"
                             )}
+                            disabled={disabled}
                             type="button"
                         >
                             {format(day, "d")}

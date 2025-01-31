@@ -1,10 +1,11 @@
 "use client";
 import React from "react";
+import { Tabs } from "@/components/Tabs/Tabs";
 import BasicDatePicker from "./BasicDatePicker";
 import CustomFormatDatePicker from "./CustomFormatDatePicker";
 import InputVariantsDatePicker from "./InputVariantsDatePicker";
 import DefaultDatePicker from "./DefaultDatePicker";
-import Tabs from "@/components/Tabs/Tabs";
+import DateRangePicker from "./DateRangePicker";
 
 const DatePickerExamples = () => {
     const examples = [
@@ -12,6 +13,7 @@ const DatePickerExamples = () => {
         { id: "format", label: "Date Formats", content: <CustomFormatDatePicker /> },
         { id: "input", label: "Input Variants", content: <InputVariantsDatePicker /> },
         { id: "default", label: "Default & State", content: <DefaultDatePicker /> },
+        { id: "range", label: "Date Restrictions", content: <DateRangePicker /> },
     ];
 
     return (
