@@ -9,38 +9,51 @@ interface ComponentCard {
 const components: ComponentCard[] = [
     {
         title: "Alert Dialog",
-        description: "Animated alert dialogs with GIF icons, customizable actions, and backdrop blur effects",
+        description:
+            "Animated alert dialogs with GIF icons, customizable actions, and backdrop blur effects",
         href: "/alerts",
     },
     {
         title: "Toast",
-        description: "Position-based toasts with progress bars, custom durations, and smooth animations",
+        description:
+            "Position-based toasts with progress bars, custom durations, and smooth animations",
         href: "/toasts",
     },
     {
         title: "Modal",
-        description: "Flexible modals with header, body, and footer components, featuring backdrop animations",
+        description:
+            "Flexible modals with header, body, and footer components, featuring backdrop animations",
         href: "/modal",
     },
     {
         title: "Tooltip",
-        description: "Multi-directional tooltips with rich content support and customizable arrow positions",
+        description:
+            "Multi-directional tooltips with rich content support and customizable arrow positions",
         href: "/tooltip",
     },
     {
         title: "Accordion",
-        description: "Feature-rich accordions with animations, nested content, and multiple expansion modes",
+        description:
+            "Feature-rich accordions with animations, nested content, and multiple expansion modes",
         href: "/accordion",
     },
     {
         title: "Tabs",
-        description: "Accessible tabs with URL sync, vertical layouts, and animated transitions using Framer Motion",
+        description:
+            "Accessible tabs with URL sync, vertical layouts, and animated transitions using Framer Motion",
         href: "/tabs",
     },
     {
         title: "Infinite Scroll",
-        description: "An infinite scroll component that loads more items as you scroll down",
+        description:
+            "An infinite scroll component that loads more items as you scroll down",
         href: "/infinite-scroll",
+    },
+    {
+        title: "Date Picker",
+        description:
+            "Customizable date picker with controlled/uncontrolled modes, custom date formats, and editable input",
+        href: "/date-picker",
     },
 ];
 
@@ -88,4 +101,3 @@ export default function Home() {
         </div>
     );
 }
-
